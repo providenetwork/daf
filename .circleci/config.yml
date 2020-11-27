@@ -100,7 +100,8 @@ jobs:
           command: npm whoami
       - run:
           name: Release packages to npm
-          command: npx lerna publish --canary premajor --preid beta --pre-dist-tag beta --no-git-reset --yes
+          #          command: npx lerna publish --canary premajor --preid beta --pre-dist-tag beta --no-git-reset --yes
+          command: bash scripts/beta-release.sh
 
   docker:
     working_directory: ~/repo
@@ -150,3 +151,10 @@ workflows:
                 - master
           requires:
             - publish-packages-npm
+      - publish-beta-packages-npm:
+          filters:
+            branches:
+              only:
+                - beta
+          requires:
+            - test-packages
